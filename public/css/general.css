@@ -1,0 +1,18 @@
+.text-align-right
+{
+    text-align: right;
+}
+.margin
+{
+    margin:  15px;
+}
+
+.left
+{
+    margin-left: 10px;
+}
+
+.carousel-item  img{
+    height: 670px;
+    width: 100%;
+}
