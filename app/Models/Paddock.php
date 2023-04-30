@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paddock extends Model
 {
+    protected $guarded = [];
+    
     use HasFactory;
 
     /**

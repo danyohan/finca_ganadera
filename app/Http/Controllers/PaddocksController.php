@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\GenericInterface;
 use App\Models\Paddock;
 use Illuminate\Http\Request;
 
-
 class PaddocksController extends Controller
 {
+
+    private $genericInterface;
+
+    public function __construct(GenericInterface $genericInterface)
+    {
+         $this->genericInterface = $genericInterface;
+    }
 
     /**
      * Display a listing of the resource.
@@ -16,7 +23,7 @@ class PaddocksController extends Controller
      */
     public function index()
     {
-        $paddock = Paddock::paginate(10);
+        $paddock = $this->genericInterface->getData();
         return view('paddocks.index')->with('paddocks', $paddock);
     }
 
@@ -38,13 +45,15 @@ class PaddocksController extends Controller
      */
     public function store(Request $request)
     {
-        $paddock = new Paddock();
-        $paddock->name = $request->get('name');
-        $paddock->size = $request->get('size');
+        $paddockArray = $request->only([
+            'name',
+            'size',
+            'animal_number'
+        ]);
 
-        $paddock->save();
 
-        return  redirect('/paddocks');
+        $this->genericInterface->create($paddockArray);
+        return redirect('/paddocks');
     }
 
     /**
@@ -66,8 +75,8 @@ class PaddocksController extends Controller
      */
     public function edit($id)
     {
-        $paddock = Paddock::find($id);
-        return view('paddocks.edit')->with('paddock' , $paddock);
+        $paddock = $this->genericInterface->getById($id);
+        return view('paddocks.edit')->with('paddock', $paddock);
     }
 
     /**
@@ -77,13 +86,16 @@ class PaddocksController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Paddock $paddock)
     {
-        $paddock = Paddock::find($id);
-        $paddock->name = $request->get('name');
-        $paddock->size = $request->get('size');
 
-        $paddock->save();
+        $paddockArray = $request->only([
+            'name',
+            'size',
+            'animal_number'
+        ]);
+
+        $this->genericInterface->update($paddockArray, $paddock);
 
         return  redirect('/paddocks');
     }
@@ -96,8 +108,7 @@ class PaddocksController extends Controller
      */
     public function destroy($id)
     {
-        $paddock = Paddock::find($id);
-        $paddock->delete();
+        $this->genericInterface->delete($id);
 
         return redirect('/paddocks');
     }

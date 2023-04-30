@@ -11,6 +11,10 @@
             <label for="size">Tamaño</label>
             <input type="number" class="form-control" name="size" id="size" placeholder="Tamaño">
         </div>
+        <div class="form-group">
+            <label for="size">Cantidad Animales</label>
+            <input type="number" class="form-control" name="animal_number" id="animal_number" placeholder="Cantidad animales">
+        </div>
         <button type="submit" class="btn btn-success">Guardar</button>
         <button type="submit" class="btn btn-danger">Cancelar</button>
     </form>

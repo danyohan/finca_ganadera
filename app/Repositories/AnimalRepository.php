@@ -2,34 +2,38 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\AnimalInterface;
+use App\Interfaces\GenericInterface;
 use App\Models\Animal;
-use Illuminate\Database\Eloquent\Model;
 
-class AnimalRepository implements AnimalInterface
+class AnimalRepository implements GenericInterface
 {
 
-    public function createAnimal(array $animal): Model
+    public function create(array $data): void
     {
-        Animal::create($animal);
+        Animal::create($data);
     }
 
-    public function updateAnimal($animal): void
+    public function update($data, $model): void
     {
-        Animal::update($animal);
+       $model->update($data);
     }
 
-    public function deleteAnimal($animalId): void
+    public function delete($id): void
     {
-        Animal::destroy($animalId);
+        Animal::destroy($id);
     }
 
-    public function getAnimals()
+    public function getData()
     {
-       return  Animal::join('races', 'animals.race_id', '=', 'races.id')
+
+        return  Animal::join('races', 'animals.race_id', '=', 'races.id')
             ->join('colors', 'animals.color_id', '=', 'colors.id')
             ->select('animals.id', 'animals.name', 'animals.age', 'animals.weight', 'races.name as race', 'colors.name as color_name')
             ->paginate(10);
+    }
 
+    public function getById($id)
+    {
+        return Animal::find($id);
     }
 }

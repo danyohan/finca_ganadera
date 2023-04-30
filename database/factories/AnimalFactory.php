@@ -19,15 +19,15 @@ class AnimalFactory extends Factory
     {
         $name = $this->faker->sentence();
         return [
-            'name'       => null,
-            'race_id'    =>$this->faker->numberBetween(1,4),
-            'color_id'   =>$this->faker->numberBetween(1,4),
-            'paddock_id' =>$this->faker->numberBetween(1,4),
-            'status_id'  =>$this->faker->numberBetween(1,4),
-            'animal_type_id'  =>$this->faker->numberBetween(1,4),
-            'age'        =>$this->faker->numberBetween(1,10),
-            'weight'     =>$this->faker->randomFloat(1,1,10),
-            'slug'       => Str::slug($name, '-')
+            'name'           => null,
+            'race_id'        =>$this->faker->numberBetween(1,4),
+            'color_id'       =>$this->faker->numberBetween(1,4),
+            'paddock_id'     =>$this->faker->numberBetween(1,4),
+            'status_id'      =>$this->faker->numberBetween(1,4),
+            'animal_type_id' =>$this->faker->numberBetween(1,4),
+            'age'            =>$this->faker->numberBetween(1,10),
+            'weight'         =>$this->faker->randomFloat(1,1,10),
+            'slug'           => Str::slug($name, '-')
 
         ];
     }

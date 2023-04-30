@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Controller\Dto\ResponseStatusCode;
+use App\Interfaces\GenericInterface;
 use App\Models\Animal;
 use App\Models\AnimalType;
 use App\Models\Color;
 use App\Models\Paddock;
 use App\Models\Race;
 use App\Models\Status;
-use App\Services\AnimalService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -20,11 +20,11 @@ use Throwable;
 class AnimalController extends Controller
 {
 
-    private AnimalService $animalService;
+    private $genericInterface;
 
-    public function __construct(AnimalService $animalService)
+    public function __construct(GenericInterface $genericInterface)
     {
-        $this->animalService = $animalService;
+        $this->genericInterface = $genericInterface;
     }
 
 
@@ -36,7 +36,7 @@ class AnimalController extends Controller
     public function index()
     {
 
-        $animals = $this->animalService->getAnimals();
+        $animals = $this->genericInterface->getData();
 
         return view('animal.index', compact('animals'));
     }
@@ -84,7 +84,7 @@ class AnimalController extends Controller
             //Storage::disk('public')->put('images', $request->file('image'));
         }
 
-        $this->animalService->createAnimal($request->all());
+        $this->genericInterface->create($request->all());
 
         return redirect('/animal');
     }
@@ -108,7 +108,7 @@ class AnimalController extends Controller
      */
     public function edit($id)
     {
-        $animal = Animal::find($id);
+        $animal = $this->genericInterface->getById($id);
         $races = Race::all()->sortBy('id');
         $colors = Color::all()->sortBy('name');
         $states = Status::all()->sortBy('name');
@@ -140,9 +140,7 @@ class AnimalController extends Controller
 
         try {
 
-            $this->animalService->updateAnimal($request->all());
-            //$animal->update($request->all());
-
+            $this->genericInterface->update($request->all(), $animal);
             return redirect('/animal');
 
         } catch (Throwable $exception) {
@@ -164,7 +162,7 @@ class AnimalController extends Controller
      */
     public function destroy($id)
     {
-        $this->animalService->deleteAnimal($id);
+        $this->genericInterface->delete($id);
         return redirect('/animal');
     }
 }
