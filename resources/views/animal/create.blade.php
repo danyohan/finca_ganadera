@@ -12,6 +12,7 @@
                 </div>
             </div>
         </div>
+        <div class="formulario">
         <div class="row mb-4">
             <div class="col">
                 <div class="form-outline">
@@ -139,6 +140,7 @@
                 </div>
             </div>
         </div>
+    </div>
         <button type="submit" class="btn btn-success">Guardar</button>
         <a href="/animal" class="btn btn-primary">Cancelar</a>
     </form>

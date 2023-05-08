@@ -24,7 +24,7 @@
             </div>
             <div class="col">
                 <div class="form-outline">
-                    <img src="{{asset('storage/images/'.$animal->path )}}" alt=""/>
+                    <img src="{{url('images/'. $animal->path) }}" alt=""/>
                 </div>
             </div>
         </div>

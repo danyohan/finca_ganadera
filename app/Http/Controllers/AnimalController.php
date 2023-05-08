@@ -21,6 +21,7 @@ class AnimalController extends Controller
 {
 
     private $genericInterface;
+    private const VIEW = '/animal';
 
     public function __construct(GenericInterface $genericInterface)
     {
@@ -74,19 +75,21 @@ class AnimalController extends Controller
         );
 
         if ($request->hasFile('image')) {
-            $imageName = time().'_'. $request->file('image')->getClientOriginalName();
+            $file = $request->file('image');
+            $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
 
             $request->request->add([
-                'path' => $imageName ,
+                'path' => $imageName,
             ]);
 
-           $request->file('image')->storeAs('images', $imageName);
-            //Storage::disk('public')->put('images', $request->file('image'));
+            $request->file('image')->storeAs('images', $imageName);
+            //$request->file->move(public_path('image'), $imageName);
+            $file->move('images/', $imageName );
         }
 
         $this->genericInterface->create($request->all());
 
-        return redirect('/animal');
+        return redirect(self::VIEW);
     }
 
     /**
@@ -97,7 +100,6 @@ class AnimalController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -142,7 +144,6 @@ class AnimalController extends Controller
 
             $this->genericInterface->update($request->all(), $animal);
             return redirect('/animal');
-
         } catch (Throwable $exception) {
             return new JsonResponse([
                 'error' => [
@@ -151,7 +152,6 @@ class AnimalController extends Controller
                 ]
             ], 409);
         }
-
     }
 
     /**
@@ -163,6 +163,6 @@ class AnimalController extends Controller
     public function destroy($id)
     {
         $this->genericInterface->delete($id);
-        return redirect('/animal');
+        return redirect(self::VIEW);
     }
 }

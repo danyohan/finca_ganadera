@@ -10,10 +10,11 @@ class PaddocksController extends Controller
 {
 
     private $genericInterface;
+    private const VIEW = '/paddocks';
 
     public function __construct(GenericInterface $genericInterface)
     {
-         $this->genericInterface = $genericInterface;
+        $this->genericInterface = $genericInterface;
     }
 
     /**
@@ -51,9 +52,8 @@ class PaddocksController extends Controller
             'animal_number'
         ]);
 
-
         $this->genericInterface->create($paddockArray);
-        return redirect('/paddocks');
+        return redirect(self::VIEW);
     }
 
     /**
@@ -97,7 +97,7 @@ class PaddocksController extends Controller
 
         $this->genericInterface->update($paddockArray, $paddock);
 
-        return  redirect('/paddocks');
+        return  redirect(self::VIEW);
     }
 
     /**
@@ -110,6 +110,6 @@ class PaddocksController extends Controller
     {
         $this->genericInterface->delete($id);
 
-        return redirect('/paddocks');
+        return redirect(self::VIEW);
     }
 }
